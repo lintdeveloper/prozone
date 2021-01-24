@@ -5,6 +5,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:ffi';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:prozone/models/images_model.dart';
 import 'package:prozone/models/provider-type_model.dart';
@@ -20,26 +22,15 @@ void main() {
     String _description = "This is a description";
     int _rating = 6;
     String _updateAt = "2021-01-05T00:00:00.000";
+    String _state = "Kwara";
 
     List<Images> mockImages = [
       Images(
-          id: 1,
-          name: "Image1",
-          createdAt: _createdDate,
-          updatedAt: _createdDate,
-          url: "imageUrl1"),
-      Images(
-          id: 2,
-          name: "Image2",
-          createdAt: _createdDate,
-          updatedAt: _createdDate,
-          url: "imageUrl2"),
-      Images(
-          id: 3,
-          name: "Image3",
-          createdAt: _createdDate,
-          updatedAt: _createdDate,
-          url: "imageUrl3")
+        id: 1,
+        name: "img-1",
+        url: "url-1",
+        createdAt: _createdDate,
+        updatedAt: _createdDate)
     ];
     ProviderType _providerType = ProviderType(
         id: 2,
@@ -49,30 +40,80 @@ void main() {
 
     test("Provider serialised to JSON", () async {
       final actual = Provider(
-        id: _id,
+        id: null,
         name: _name,
-        activeStatus: _activeStatus,
-        address: _address,
-        createdAt: _createdDate,
         description: _description,
         rating: _rating,
-        updatedAt: _updateAt,
-        images: mockImages,
-        providerType: _providerType
+        address: _address,
+        activeStatus: _activeStatus,
+        providerType: _providerType,
+        state: _state,
       ).toJson();
 
       final matcher = {
-        "id": _id,
+        "id": null,
         "name": _name,
-        "activeStatus": _activeStatus,
-        "address": _address,
-        "createdAt": _createdDate,
         "description": _description,
         "rating": _rating,
-        "updatedAt": _updateAt,
-        "images": mockImages,
-        "providerType": _providerType
+        "address": _address,
+        "activeStatus": _activeStatus,
+        "providerType": _providerType,
+        "state":_state,
+        "createdAt": null,
+        "updatedAt": null,
+        "images": null
       };
+      expect(actual, matcher);
+    });
+
+    test("Provider serialised from JSON", () async {
+      ProviderType mockProvider = ProviderType(
+        id: 1,
+        name: "type-1",
+        createdAt: _createdDate,
+        updatedAt: _updateAt
+      );
+
+      final Map<String, dynamic> json = {
+        "id": _id,
+        "name": _name,
+        "description": _description,
+        "rating": _rating,
+        "address": _address,
+        "activeStatus": _activeStatus,
+        "providerType": {
+          "id": 1,
+          "name": "type-1",
+          "createdAt": _createdDate,
+          "updatedAt": _updateAt
+        },
+        "state": _state,
+        "images": [{
+          "id": 1,
+          "name":"img-1",
+          "url": "url-1",
+          "createdAt": _createdDate,
+          "updatedAt": _updateAt
+        }],
+        "createdAt": _createdDate,
+        "updatedAt": _updateAt
+      };
+
+      final actual = Provider.fromJson(json);
+      final matcher = Provider(
+          id: _id,
+          name: _name,
+          description: _description,
+          rating: _rating,
+          address: _address,
+          providerType: mockProvider,
+          activeStatus: _activeStatus,
+          state: _state,
+          images: mockImages,
+          createdAt: _createdDate,
+          updatedAt: _updateAt,
+      );
+
       expect(actual, matcher);
     });
   });

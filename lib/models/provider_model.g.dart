@@ -17,6 +17,7 @@ Provider _$ProviderFromJson(Map<String, dynamic> json) {
     providerType: json['providerType'] == null
         ? null
         : ProviderType.fromJson(json['providerType'] as Map<String, dynamic>),
+    state: json['state'] as String,
     images: (json['images'] as List)
         ?.map((e) =>
             e == null ? null : Images.fromJson(e as Map<String, dynamic>))
@@ -35,6 +36,7 @@ Map<String, dynamic> _$ProviderToJson(Provider instance) => <String, dynamic>{
       'activeStatus': instance.activeStatus,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
+      'state': instance.state,
       'providerType': instance.providerType,
       'images': instance.images,
     };

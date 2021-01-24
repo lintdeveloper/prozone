@@ -17,20 +17,22 @@ class Provider extends Equatable {
   final String activeStatus;
   final String createdAt;
   final String updatedAt;
+  final String state;
   final ProviderType providerType;
   final List<Images> images;
 
-  Provider(
-      {this.id,
-      this.name,
-      this.description,
-      this.rating,
-      this.address,
-      this.activeStatus,
-      this.providerType,
-      this.images,
-      this.createdAt,
-      this.updatedAt});
+  Provider({
+    this.id,
+    this.name,
+    this.description,
+    this.rating,
+    this.address,
+    this.activeStatus,
+    this.providerType,
+    this.state,
+    this.images,
+    this.createdAt,
+    this.updatedAt});
 
   factory Provider.fromJson(Map<String, dynamic> json) =>
       _$ProviderFromJson(json);
@@ -45,6 +47,7 @@ class Provider extends Equatable {
     rating,
     address,
     activeStatus,
+    state,
     createdAt,
     updatedAt
   ];
