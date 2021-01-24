@@ -68,13 +68,7 @@ class _AppSetterState extends State<AppSetter>
             ),
             Center(
               child: Container(
-                width:  size.width * 0.50,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(logo),
-                        fit: BoxFit.scaleDown
-                    )
-                ),
+
               ),
             ),
           ],

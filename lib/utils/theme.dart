@@ -8,7 +8,6 @@ final ThemeData lightTheme = ThemeData(
   cursorColor: GREEN_HUE,
   accentColor: GREEN_HUE,
   fontFamily: GoogleFonts.lato().fontFamily,
-  scaffoldBackgroundColor: LIGHT_BLUE_ACCENT,
   bottomSheetTheme: BottomSheetThemeData(
     backgroundColor: Colors.blueGrey[50],
   ),
