@@ -66,6 +66,8 @@ class NetworkUtil {
         headers: headers,
         body: json.encode(body),
       ).timeout(const Duration(seconds: TIME_OUT_SECONDS));
+      print("Response");
+      print(response.body);
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {

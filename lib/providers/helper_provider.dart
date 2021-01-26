@@ -10,7 +10,7 @@ class HelperProvider extends BaseHelper with ChangeNotifier {
   Map<String, String> _headers = {'Content-Type': 'application/json'};
 
   @override
-  Future<List<CustomProviderResponse>> getCustomProviderList(
+  Future<List<CustomProviderResponse>> getCustomProviderResponseList(
       {String authToken, Function errorCallback}) async {
     const url = BASE_URL + '/providers';
     _headers["Authorization"] = "Bearer $authToken";
@@ -34,20 +34,15 @@ class HelperProvider extends BaseHelper with ChangeNotifier {
   }
 
   @override
-  Future<List<CustomProviderRequest>> addCustomProvider(
+  Future<CustomProviderResponse> addCustomProvider(
       {String authToken, Map requestPayload, Function errorCallback}) async {
     const url = BASE_URL + '/providers';
     _headers["Authorization"] = "Bearer $authToken";
 
     String msg;
     try {
-      // final responsePayload = await _netUtil.getList(url, headers: _headers);
-      // final providersList = <CustomProviderRequest>[];
-      // for (var data in responsePayload) {
-      //   providersList.add(CustomProvider.fromJson(data));
-      // }
-      // print(providersList.length);
-      // return providersList;
+      final responsePayload = await _netUtil.post(url, headers: _headers, body: requestPayload);
+      return CustomProviderResponse.fromJson(responsePayload);
     } on CustomException catch (e) {
       msg = e.msg == null ? PROVIDERS_ERROR_MSG : e.msg;
     } catch (e) {

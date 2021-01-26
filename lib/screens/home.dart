@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await application.getToken("authToken").then((token) {
       _token = token["value"];
     });
-    List<CustomProviderResponse> responsePayload = await helper.getCustomProviderList(
+    List<CustomProviderResponse> responsePayload = await helper.getCustomProviderResponseList(
         authToken: _token, errorCallback: errorCallback);
     return responsePayload;
   }

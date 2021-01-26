@@ -26,7 +26,7 @@ Map<String, dynamic> _$CustomProviderRequestToJson(
       'description': instance.description,
       'rating': instance.rating,
       'address': instance.address,
-      'activeStatus': instance.activeStatus,
+      'active_status': instance.activeStatus,
       'state': instance.state,
-      'providerType': instance.providerType,
+      'provider_type': instance.providerType,
     };

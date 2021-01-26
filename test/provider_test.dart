@@ -53,8 +53,8 @@ void main() {
         "description": _description,
         "rating": _rating,
         "address": _address,
-        "activeStatus": _activeStatus,
-        "providerType": _providerType,
+        "active_status": _activeStatus,
+        "provider_type": _providerType,
         "state": _state
       };
       expect(actual, matcher);

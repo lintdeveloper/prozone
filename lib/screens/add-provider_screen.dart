@@ -93,19 +93,18 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
                                     scaffoldKey: _scaffoldKey,
                                     msg: "Rating can't be 0");
                               } else {
-                                addProvider(
-                                    context,
-                                    providerDescription: _providerDescription.trim(),
+                                addProvider(context,
+                                    providerDescription:
+                                        _providerDescription.trim(),
                                     providerAddress: _providerAddress.trim(),
-                                    providerType: _selectedProviderType.name,
+                                    providerType: _selectedProviderType.id.toString(),
                                     providerName: _providerName,
                                     activeStatus: _selectedActiveStatus.name,
-                                    providerState: _selectedState.name,
+                                    providerState: _selectedState.id.toString(),
                                     providerRating: (_providerRating).round(),
-                                    helper: _helper
-                                  );
-                                }
+                                    helper: _helper);
                               }
+                            }
                           },
                           child: Icon(Icons.check, color: GREEN_HUE)),
                     ],
@@ -431,9 +430,15 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
     ShowSnackBar(scaffoldKey: _scaffoldKey, msg: msg);
   }
 
-  Future addProvider(BuildContext context, {String providerDescription,
-    String providerName, String providerAddress, String providerState,
-    String providerType, String activeStatus, int providerRating, HelperProvider helper}) async {
+  Future<CustomProviderResponse> addProvider(BuildContext context,
+      {String providerDescription,
+      String providerName,
+      String providerAddress,
+      String providerState,
+      String providerType,
+      String activeStatus,
+      int providerRating,
+      HelperProvider helper}) async {
     ShowDialog(context: context);
     String _token;
     final application = Application.instance();
@@ -441,16 +446,25 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
       _token = token["value"];
     });
 
-    List<CustomProviderRequest> responsePayload = await helper.addCustomProvider(
-        authToken: _token, errorCallback: errorCallback, requestPayload: CustomProviderRequest(
-      name: providerName,
-      description: providerDescription,
-      rating: providerRating,
-      address: providerAddress,
-      activeStatus: activeStatus,
-      providerType: providerType
-    ).toJson());
-    return responsePayload;
+    CustomProviderResponse responsePayload = await helper.addCustomProvider(
+        authToken: _token,
+        errorCallback: errorCallback,
+        requestPayload: CustomProviderRequest(
+                name: providerName,
+                description: providerDescription,
+                rating: providerRating,
+                address: providerAddress,
+                state: providerState,
+                activeStatus: activeStatus,
+                providerType: providerType)
+            .toJson());
 
+    if(responsePayload.name != null){
+      showAlertDialog(context, success: "Successfully added a provider");
+    } else {
+      ShowSnackBar(
+          scaffoldKey: _scaffoldKey,
+          msg: "All fields needs to be completed");
+    }
   }
 }

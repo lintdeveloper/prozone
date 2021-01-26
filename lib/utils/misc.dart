@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:prozone/screens/home.dart';
 import 'package:prozone/utils/utils.dart';
 
 class ShowDialog {
@@ -32,3 +33,55 @@ class ShowSnackBar {
     scaffoldKey.currentState.showSnackBar(snackBar);
   }
 }
+
+ void showAlertDialog(BuildContext context, {String success}) {
+   // flutter defined function
+   showDialog(
+     context: context,
+     builder: (BuildContext context) {
+       return AlertDialog(
+         title: Text(
+           'Success',
+           textAlign: TextAlign.center,
+           style: TextStyle(
+               fontSize: 18.0,
+               color: GREEN_HUE,
+               fontWeight: FontWeight.w500),
+         ),
+         content: Column(
+           mainAxisSize: MainAxisSize.min,
+           children: <Widget>[
+             new Text(
+               "$success",
+               textAlign: TextAlign.center,
+               style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14.0),
+             ),
+             SizedBox(height: 44,),
+             Container(
+               decoration: BoxDecoration(
+                 borderRadius: BorderRadius.circular(4.0),
+                 color: GREEN_HUE
+               ),
+               width: 133.0,
+               height: 40,
+               child: RaisedButton(
+                 color: GREEN_HUE,
+                 onPressed: () async {
+                   Navigator.pushNamed(context, HomeScreen.routeName);
+                 },
+                 child: Text(
+                   "Proceed",
+                   style: TextStyle(
+                       fontWeight: FontWeight.normal,
+                       fontSize: 16.0,
+                       color: Color.fromRGBO(250, 247, 255, 1)),
+                 ),
+               ),
+             )
+           ],
+         ),
+
+       );
+     },
+   );
+ }
