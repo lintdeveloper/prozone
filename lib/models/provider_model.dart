@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:prozone/models/state_model.dart';
 import 'images_model.dart';
 import 'provider-type_model.dart';
 
@@ -8,7 +9,7 @@ part 'provider_model.g.dart';
 
 @immutable
 @JsonSerializable()
-class Provider extends Equatable {
+class CustomProvider extends Equatable {
   final int id;
   final String name;
   final String description;
@@ -17,11 +18,11 @@ class Provider extends Equatable {
   final String activeStatus;
   final String createdAt;
   final String updatedAt;
-  final String state;
+  final CustomState state;
   final ProviderType providerType;
   final List<Images> images;
 
-  Provider({
+  CustomProvider({
     this.id,
     this.name,
     this.description,
@@ -34,10 +35,10 @@ class Provider extends Equatable {
     this.createdAt,
     this.updatedAt});
 
-  factory Provider.fromJson(Map<String, dynamic> json) =>
-      _$ProviderFromJson(json);
+  factory CustomProvider.fromJson(Map<String, dynamic> json) =>
+      _$CustomProviderFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ProviderToJson(this);
+  Map<String, dynamic> toJson() => _$CustomProviderToJson(this);
 
   @override
   List<Object> get props => [

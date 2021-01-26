@@ -8,9 +8,11 @@
 import 'dart:ffi';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 import 'package:prozone/models/images_model.dart';
 import 'package:prozone/models/provider-type_model.dart';
 import 'package:prozone/models/provider_model.dart';
+import 'package:prozone/models/state_model.dart';
 
 void main() {
   group("Serialisation:", () {
@@ -22,7 +24,6 @@ void main() {
     String _description = "This is a description";
     int _rating = 6;
     String _updateAt = "2021-01-05T00:00:00.000";
-    String _state = "Kwara";
 
     List<Images> mockImages = [
       Images(
@@ -38,8 +39,14 @@ void main() {
         createdAt: _createdDate,
         updatedAt: _createdDate);
 
-    test("Provider serialised to JSON", () async {
-      final actual = Provider(
+      CustomState _state = CustomState(
+        id: 2,
+        name: "providerType",
+        createdAt: _createdDate,
+        updatedAt: _createdDate);
+
+    test("CustomProvider serialised to JSON", () async {
+      final actual = CustomProvider(
         id: null,
         name: _name,
         description: _description,
@@ -66,13 +73,18 @@ void main() {
       expect(actual, matcher);
     });
 
-    test("Provider serialised from JSON", () async {
-      ProviderType mockProvider = ProviderType(
+    test("CustomProvider serialised from JSON", () async {
+      ProviderType mockCustomProvider = ProviderType(
         id: 1,
         name: "type-1",
         createdAt: _createdDate,
         updatedAt: _updateAt
       );
+      CustomState _customState = CustomState(
+          id: 1,
+          name: "state-1",
+          createdAt: _createdDate,
+          updatedAt: _updateAt);
 
       final Map<String, dynamic> json = {
         "id": _id,
@@ -87,7 +99,12 @@ void main() {
           "createdAt": _createdDate,
           "updatedAt": _updateAt
         },
-        "state": _state,
+        "state": {
+          "id": 1,
+          "name": "state-1",
+          "createdAt": _createdDate,
+          "updatedAt": _updateAt
+        },
         "images": [{
           "id": 1,
           "name":"img-1",
@@ -99,16 +116,16 @@ void main() {
         "updatedAt": _updateAt
       };
 
-      final actual = Provider.fromJson(json);
-      final matcher = Provider(
+      final actual = CustomProvider.fromJson(json);
+      final matcher = CustomProvider(
           id: _id,
           name: _name,
           description: _description,
           rating: _rating,
           address: _address,
-          providerType: mockProvider,
+          providerType: mockCustomProvider,
           activeStatus: _activeStatus,
-          state: _state,
+          state: _customState,
           images: mockImages,
           createdAt: _createdDate,
           updatedAt: _updateAt,

@@ -6,8 +6,8 @@ part of 'provider_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Provider _$ProviderFromJson(Map<String, dynamic> json) {
-  return Provider(
+CustomProvider _$CustomProviderFromJson(Map<String, dynamic> json) {
+  return CustomProvider(
     id: json['id'] as int,
     name: json['name'] as String,
     description: json['description'] as String,
@@ -17,7 +17,9 @@ Provider _$ProviderFromJson(Map<String, dynamic> json) {
     providerType: json['providerType'] == null
         ? null
         : ProviderType.fromJson(json['providerType'] as Map<String, dynamic>),
-    state: json['state'] as String,
+    state: json['state'] == null
+        ? null
+        : CustomState.fromJson(json['state'] as Map<String, dynamic>),
     images: (json['images'] as List)
         ?.map((e) =>
             e == null ? null : Images.fromJson(e as Map<String, dynamic>))
@@ -27,7 +29,8 @@ Provider _$ProviderFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ProviderToJson(Provider instance) => <String, dynamic>{
+Map<String, dynamic> _$CustomProviderToJson(CustomProvider instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'description': instance.description,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:prozone/application.dart';
 import 'package:prozone/screens/screens.dart';
-import 'utils/utils.dart';
+
+import 'models/token__model.dart';
 
 class AppSetter extends StatefulWidget {
   @override
@@ -10,7 +11,6 @@ class AppSetter extends StatefulWidget {
 
 class _AppSetterState extends State<AppSetter>
     with SingleTickerProviderStateMixin {
-
   AnimationController _animationController;
   Animation _animation;
 
@@ -20,6 +20,7 @@ class _AppSetterState extends State<AppSetter>
   void initState() {
     super.initState();
     setUpAnimation();
+    saveToken();
     checkUser();
   }
 
@@ -41,13 +42,14 @@ class _AppSetterState extends State<AppSetter>
         if (token) {
           print("Token");
           print(token);
-          await application.getToken("authToken").then((token){
+          await application.getToken("authToken").then((token) {
             _token = token["value"];
           });
-          /// Navigates to main screen if token is available
+          Navigator.pushNamedAndRemoveUntil(
+              context, HomeScreen.routeName, (Route<dynamic> route) => false);
         } else {
-          Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routeName,
-                  (Route<dynamic> route) => false);
+          Navigator.pushNamedAndRemoveUntil(
+              context, HomeScreen.routeName, (Route<dynamic> route) => false);
         }
       });
     }
@@ -64,16 +66,21 @@ class _AppSetterState extends State<AppSetter>
           //fit: StackFit.expand,
           children: <Widget>[
             Container(
-              // color: APP_COLOR,
-            ),
+                // color: APP_COLOR,
+                ),
             Center(
-              child: Container(
-
-              ),
+              child: Container(),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void saveToken() async {
+    final application = Application.instance();
+    Token token = Token("token",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjEwNzI4MjAzLCJleHAiOjE2MTMzMjAyMDN9.7TKlfBKkf8jw9FPjo91z7gQxvLB21ycXphEkH6-_Cc0");
+    await application.setAuthToken("authToken", token.toJson());
   }
 }
