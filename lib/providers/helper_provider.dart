@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:prozone/models/provider-type_model.dart';
 import 'package:prozone/models/provider_model.dart';
+import 'package:prozone/models/state_model.dart';
 import 'package:prozone/providers/base_helper.dart';
 import 'package:prozone/utils/utils.dart';
 
@@ -29,5 +31,17 @@ class HelperCustomProvider extends BaseHelper with ChangeNotifier {
     }
     errorCallback(msg);
     throw CustomException(msg: msg);
+  }
+
+  @override
+  Future<List<ProviderType>> getCustomProviderType({String authToken, Function errorCallback}) {
+    // TODO: implement getCustomProviderType
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<CustomState>> getStateList({String authToken, Function errorCallback}) {
+    // TODO: implement getStateList
+    throw UnimplementedError();
   }
 }
