@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _helper = Provider.of<HelperCustomProvider>(context);
+    final _helper = Provider.of<HelperProvider>(context);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<List<CustomProvider>> getProviderListAction(
-      {BuildContext context, HelperCustomProvider helper}) async {
+      {BuildContext context, HelperProvider helper}) async {
     String _token;
     final application = Application.instance();
     await application.getToken("authToken").then((token) {

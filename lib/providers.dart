@@ -4,6 +4,6 @@ import 'package:prozone/providers/helper_provider.dart';
 
 List<SingleChildWidget> getProviders() {
   return [
-    ChangeNotifierProvider(create: (context) => HelperCustomProvider())
+    ChangeNotifierProvider(create: (context) => HelperProvider())
   ];
 }

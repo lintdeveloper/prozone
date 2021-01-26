@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:prozone/application.dart';
 import 'package:prozone/mixins/index.dart';
+import 'package:prozone/models/models.dart';
+import 'package:prozone/providers/helper_provider.dart';
 import 'package:prozone/utils/consts.dart';
+import 'package:prozone/utils/utils.dart';
 
 class AddProviderScreen extends StatefulWidget {
   static String routeName = "add-provider";
@@ -13,7 +19,25 @@ class AddProviderScreen extends StatefulWidget {
 class _AddProviderScreenState extends State<AddProviderScreen> {
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  String _state = "";
+  ProviderType _selectedProviderType;
+  List<ProviderType> _providerTypeList;
+  List<CustomState> _customStateList;
+  CustomState _selectedState;
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      setState(() async {
+        _providerTypeList = await getProviderTypeAction(context: context);
+        _customStateList = await getStatesAction(context: context);
+      });
+      setState(() {
+        _selectedProviderType = _providerTypeList[0];
+        _selectedState = _customStateList[0];
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +53,16 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(left:18, right:18, bottom: 16,),
+                  margin: EdgeInsets.only(
+                    left: 18,
+                    right: 18,
+                    bottom: 16,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                          onTap:() => Navigator.pop(context),
+                          onTap: () => Navigator.pop(context),
                           child: Icon(Icons.arrow_back, color: BLUE_HUE)),
                       Text("Add Provider",
                           style: TextStyle(color: BLUE_HUE, fontSize: 16)),
@@ -58,16 +86,18 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
                                 decoration: InputDecoration(
                                     hintText: "Provider name",
                                     labelText: "Enter provider name",
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+                                    contentPadding: EdgeInsets.fromLTRB(
+                                        16.0, 16.0, 16.0, 16.0),
                                     enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(6)),
-                                        borderSide: BorderSide(color: GREEN_HUE)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(6)),
+                                        borderSide:
+                                            BorderSide(color: GREEN_HUE)),
                                     focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(6)),
-                                        borderSide: BorderSide(color: GREEN_HUE)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(6)),
+                                        borderSide:
+                                            BorderSide(color: GREEN_HUE)),
                                     filled: false)),
                           ),
                           TextFormField(
@@ -86,10 +116,12 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
                                 contentPadding:
                                     EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
                                 enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(6)),
                                     borderSide: BorderSide(color: GREEN_HUE)),
                                 focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(6)),
                                     borderSide: BorderSide(color: GREEN_HUE)),
                                 filled: false),
                             // onSaved: (val) => _email = val,
@@ -111,8 +143,8 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
                                   hintText: "Address",
                                   helperText: "Address",
                                   labelText: "Enter address",
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+                                  contentPadding: EdgeInsets.fromLTRB(
+                                      16.0, 16.0, 16.0, 16.0),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(6)),
@@ -128,125 +160,137 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
                               // }
                             ),
                           ),
-                          Column(
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only(top: 20, left: 8),
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Choose a state",
-                                    style: TextStyle(color: BLUE_HUE.withOpacity(0.7)),
-                                  )),
-                              Container(
-                                margin: EdgeInsets.only(bottom: 14, left: 8),
-                                child: DropdownButton<String>(
-                                  isExpanded: true,
-                                  onChanged: (String newValue) {
-                                    setState(() {
-                                      _state = newValue;
-                                    });
-                                  },
-                                  iconEnabledColor: GREEN_HUE,
-                                  value: _state,
-                                  style: TextStyle(
-                                      fontSize: 14, color: BLUE_HUE.withOpacity(0.7)),
-                                  items: <DropdownMenuItem<String>>[
-                                    const DropdownMenuItem<String>(
-                                        value: "abuja", child: const Text("Abuja")),
-                                    const DropdownMenuItem<String>(
-                                        value: "adamawwa", child: const Text("Adamawa")),
-                                    const DropdownMenuItem<String>(
-                                        value: "niger", child: const Text("Niger")),
-                                    const DropdownMenuItem<String>(
-                                        value: "sterling-bank",
-                                        child: const Text("Sterling Bank"))
+                          _customStateList == null
+                              ? Container()
+                              : Column(
+                                  children: [
+                                    Container(
+                                        margin:
+                                            EdgeInsets.only(top: 20, left: 8),
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Choose a state",
+                                          style: TextStyle(
+                                              color: BLUE_HUE.withOpacity(0.7)),
+                                        )),
+                                    Container(
+                                      margin:
+                                          EdgeInsets.only(bottom: 14, left: 8),
+                                      child:
+                                          DropdownButtonFormField<CustomState>(
+                                        isExpanded: true,
+                                        onChanged: (CustomState state) {
+                                          setState(() {
+                                            _selectedState =
+                                                state;
+                                          });
+                                        },
+                                        iconEnabledColor: GREEN_HUE,
+                                        value: _customStateList[0],
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: BLUE_HUE.withOpacity(0.7)),
+                                        items: _customStateList.map<
+                                                DropdownMenuItem<CustomState>>(
+                                            (CustomState state) {
+                                          return DropdownMenuItem<CustomState>(
+                                              value: state,
+                                              child: Text(state.name));
+                                        }).toList(),
+                                      ),
+                                    )
                                   ],
                                 ),
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only( left: 8),
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Choose a provider type",
-                                    style: TextStyle(color: BLUE_HUE.withOpacity(0.7)),
-                                  )),
-                              Container(
-                                margin: EdgeInsets.only(bottom: 14, left: 8),
-                                child: DropdownButton<String>(
-                                  isExpanded: true,
-                                  onChanged: (String newValue) {
-                                    setState(() {
-                                      _state = newValue;
-                                    });
-                                  },
-                                  iconEnabledColor: GREEN_HUE,
-                                  value: _state,
-                                  style: TextStyle(
-                                      fontSize: 14, color: BLUE_HUE.withOpacity(0.7)),
-                                  items: <DropdownMenuItem<String>>[
-                                    const DropdownMenuItem<String>(
-                                        value: "abuja", child: const Text("Abuja")),
-                                    const DropdownMenuItem<String>(
-                                        value: "adamawwa", child: const Text("Adamawa")),
-                                    const DropdownMenuItem<String>(
-                                        value: "niger", child: const Text("Niger")),
-                                    const DropdownMenuItem<String>(
-                                        value: "sterling-bank",
-                                        child: const Text("Sterling Bank"))
+                          _providerTypeList == null
+                              ? Container()
+                              : Column(
+                                  children: [
+                                    Container(
+                                        margin: EdgeInsets.only(left: 8),
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Choose a provider type",
+                                          style: TextStyle(
+                                              color: BLUE_HUE.withOpacity(0.7)),
+                                        )),
+                                    Container(
+                                      margin:
+                                          EdgeInsets.only(bottom: 14, left: 8),
+                                      child:
+                                          DropdownButtonFormField<ProviderType>(
+                                        isExpanded: true,
+                                        onChanged: (ProviderType providerType) {
+                                          setState(() {
+                                            _selectedProviderType =
+                                                providerType;
+                                          });
+                                        },
+                                        iconEnabledColor: GREEN_HUE,
+                                        value: _providerTypeList[0],
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: BLUE_HUE.withOpacity(0.7)),
+                                        items: _providerTypeList.map<
+                                                DropdownMenuItem<ProviderType>>(
+                                            (ProviderType providerType) {
+                                          return DropdownMenuItem<ProviderType>(
+                                              value: providerType,
+                                              child: Text(providerType.name));
+                                        }).toList(),
+                                      ),
+                                    )
                                   ],
                                 ),
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only( left: 8),
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Choose a active status",
-                                    style: TextStyle(color: BLUE_HUE.withOpacity(0.7)),
-                                  )),
-                              Container(
-                                margin: EdgeInsets.only(bottom: 14, left: 8),
-                                child: DropdownButton<String>(
-                                  isExpanded: true,
-                                  onChanged: (String newValue) {
-                                    setState(() {
-                                      _state = newValue;
-                                    });
-                                  },
-                                  iconEnabledColor: GREEN_HUE,
-                                  value: _state,
-                                  style: TextStyle(
-                                      fontSize: 14, color: BLUE_HUE.withOpacity(0.7)),
-                                  items: <DropdownMenuItem<String>>[
-                                    const DropdownMenuItem<String>(
-                                        value: "abuja", child: const Text("Abuja")),
-                                    const DropdownMenuItem<String>(
-                                        value: "adamawwa", child: const Text("Adamawa")),
-                                    const DropdownMenuItem<String>(
-                                        value: "niger", child: const Text("Niger")),
-                                    const DropdownMenuItem<String>(
-                                        value: "sterling-bank",
-                                        child: const Text("Sterling Bank"))
+                          _providerTypeList == null
+                              ? Container()
+                              : Column(
+                                  children: [
+                                    Container(
+                                        margin: EdgeInsets.only(left: 8),
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Choose an active status",
+                                          style: TextStyle(
+                                              color: BLUE_HUE.withOpacity(0.7)),
+                                        )),
+                                    Container(
+                                      margin:
+                                          EdgeInsets.only(bottom: 14, left: 8),
+                                      child:
+                                          DropdownButtonFormField<ProviderType>(
+                                        isExpanded: true,
+                                        onChanged: (ProviderType providerType) {
+                                          setState(() {
+                                            _selectedProviderType =
+                                                providerType;
+                                          });
+                                        },
+                                        iconEnabledColor: GREEN_HUE,
+                                        value: _providerTypeList[0],
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: BLUE_HUE.withOpacity(0.7)),
+                                        items: _providerTypeList.map<
+                                                DropdownMenuItem<ProviderType>>(
+                                            (ProviderType providerType) {
+                                          return DropdownMenuItem<ProviderType>(
+                                              value: providerType,
+                                              child: Text(providerType.name));
+                                        }).toList(),
+                                      ),
+                                    )
                                   ],
                                 ),
-                              )
-                            ],
-                          ),
                           Column(
                             children: [
                               Container(
-                                  margin: EdgeInsets.only( left: 8, bottom: 4),
+                                  margin: EdgeInsets.only(left: 8, bottom: 4),
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     "Rate provider",
-                                    style: TextStyle(color: BLUE_HUE.withOpacity(0.7), fontSize: 16),
+                                    style: TextStyle(
+                                        color: BLUE_HUE.withOpacity(0.7),
+                                        fontSize: 16),
                                   )),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -256,7 +300,8 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
                                     minRating: 1,
                                     direction: Axis.horizontal,
                                     itemCount: 5,
-                                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                    itemPadding:
+                                        EdgeInsets.symmetric(horizontal: 4.0),
                                     itemBuilder: (context, _) => Icon(
                                       Icons.star,
                                       color: GREEN_HUE,
@@ -319,5 +364,37 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
         );
       }),
     );
+  }
+
+  Future<List<ProviderType>> getProviderTypeAction(
+      {BuildContext context}) async {
+    final _helper = Provider.of<HelperProvider>(context, listen: false);
+    String _token;
+    final application = Application.instance();
+    await application.getToken("authToken").then((token) {
+      _token = token["value"];
+    });
+
+    List<ProviderType> responsePayload = await _helper.getCustomProviderType(
+        authToken: _token, errorCallback: errorCallback);
+    return responsePayload;
+  }
+
+  Future<List<CustomState>> getStatesAction({BuildContext context}) async {
+    final _helper = Provider.of<HelperProvider>(context, listen: false);
+    String _token;
+    final application = Application.instance();
+    await application.getToken("authToken").then((token) {
+      _token = token["value"];
+    });
+
+    List<CustomState> responsePayload = await _helper.getStateList(
+        authToken: _token, errorCallback: errorCallback);
+    return responsePayload;
+  }
+
+  void errorCallback(String msg) {
+    Navigator.of(context).pop();
+    ShowSnackBar(scaffoldKey: _scaffoldKey, msg: msg);
   }
 }
