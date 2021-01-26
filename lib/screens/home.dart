@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prozone/application.dart';
 import 'package:prozone/mixins/index.dart';
-import 'package:prozone/models/provider_model.dart';
+import 'package:prozone/models/customProvider/custom-provider.dart';
 import 'package:prozone/providers/helper_provider.dart';
 import 'package:prozone/screens/add-provider_screen.dart';
 import 'package:prozone/screens/provider-list_screen.dart';
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                child: FutureBuilder<List<CustomProvider>>(
+                child: FutureBuilder<List<CustomProviderResponse>>(
                     future: getProviderListAction(
                         context: context, helper: _helper),
                     builder: (context, snapshot) {
@@ -72,14 +72,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<List<CustomProvider>> getProviderListAction(
+  Future<List<CustomProviderResponse>> getProviderListAction(
       {BuildContext context, HelperProvider helper}) async {
     String _token;
     final application = Application.instance();
     await application.getToken("authToken").then((token) {
       _token = token["value"];
     });
-    List<CustomProvider> responsePayload = await helper.getCustomProviderList(
+    List<CustomProviderResponse> responsePayload = await helper.getCustomProviderList(
         authToken: _token, errorCallback: errorCallback);
     return responsePayload;
   }

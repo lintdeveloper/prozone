@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:prozone/models/customProvider/custom-provider.dart';
 import 'package:prozone/models/images_model.dart';
-import 'package:prozone/models/provider_model.dart';
 import 'package:prozone/utils/consts.dart';
 
 class ProviderItem extends StatelessWidget {
-  final List<CustomProvider> providerList;
+  final List<CustomProviderResponse> providerList;
   final int index;
 
   ProviderItem({Key key, @required this.providerList, @required this.index})

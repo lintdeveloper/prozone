@@ -9,9 +9,9 @@ import 'dart:ffi';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
+import 'package:prozone/models/customProvider/custom-provider.dart';
 import 'package:prozone/models/images_model.dart';
 import 'package:prozone/models/provider-type_model.dart';
-import 'package:prozone/models/provider_model.dart';
 import 'package:prozone/models/state_model.dart';
 
 void main() {
@@ -33,21 +33,12 @@ void main() {
         createdAt: _createdDate,
         updatedAt: _createdDate)
     ];
-    ProviderType _providerType = ProviderType(
-        id: 2,
-        name: "providerType",
-        createdAt: _createdDate,
-        updatedAt: _createdDate);
 
-      CustomState _state = CustomState(
-        id: 2,
-        name: "providerType",
-        createdAt: _createdDate,
-        updatedAt: _createdDate);
+    String _providerType = "2";
+    String _state = "2";
 
-    test("CustomProvider serialised to JSON", () async {
-      final actual = CustomProvider(
-        id: null,
+    test("CustomProvider Request serialised to JSON", () async {
+      final actual = CustomProviderRequest(
         name: _name,
         description: _description,
         rating: _rating,
@@ -58,22 +49,18 @@ void main() {
       ).toJson();
 
       final matcher = {
-        "id": null,
         "name": _name,
         "description": _description,
         "rating": _rating,
         "address": _address,
         "activeStatus": _activeStatus,
         "providerType": _providerType,
-        "state":_state,
-        "createdAt": null,
-        "updatedAt": null,
-        "images": null
+        "state": _state
       };
       expect(actual, matcher);
     });
 
-    test("CustomProvider serialised from JSON", () async {
+    test("CustomProvider Response serialised from JSON", () async {
       ProviderType mockCustomProvider = ProviderType(
         id: 1,
         name: "type-1",
@@ -116,8 +103,8 @@ void main() {
         "updatedAt": _updateAt
       };
 
-      final actual = CustomProvider.fromJson(json);
-      final matcher = CustomProvider(
+      final actual = CustomProviderResponse.fromJson(json);
+      final matcher = CustomProviderResponse(
           id: _id,
           name: _name,
           description: _description,

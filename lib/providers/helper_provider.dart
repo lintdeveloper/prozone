@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:prozone/models/customProvider/custom-provider.dart';
 import 'package:prozone/models/provider-type_model.dart';
-import 'package:prozone/models/provider_model.dart';
 import 'package:prozone/models/state_model.dart';
 import 'package:prozone/providers/base_helper.dart';
 import 'package:prozone/utils/utils.dart';
@@ -10,7 +10,7 @@ class HelperProvider extends BaseHelper with ChangeNotifier {
   Map<String, String> _headers = {'Content-Type': 'application/json'};
 
   @override
-  Future<List<CustomProvider>> getCustomProviderList(
+  Future<List<CustomProviderResponse>> getCustomProviderList(
       {String authToken, Function errorCallback}) async {
     const url = BASE_URL + '/providers';
     _headers["Authorization"] = "Bearer $authToken";
@@ -18,12 +18,36 @@ class HelperProvider extends BaseHelper with ChangeNotifier {
     String msg;
     try {
       final responsePayload = await _netUtil.getList(url, headers: _headers);
-      final providersList = <CustomProvider>[];
+      final providersList = <CustomProviderResponse>[];
       for (var data in responsePayload) {
-        providersList.add(CustomProvider.fromJson(data));
+        providersList.add(CustomProviderResponse.fromJson(data));
       }
       print(providersList.length);
       return providersList;
+    } on CustomException catch (e) {
+      msg = e.msg == null ? PROVIDERS_ERROR_MSG : e.msg;
+    } catch (e) {
+      msg = e.toString();
+    }
+    errorCallback(msg);
+    throw CustomException(msg: msg);
+  }
+
+  @override
+  Future<List<CustomProviderRequest>> addCustomProvider(
+      {String authToken, Map requestPayload, Function errorCallback}) async {
+    const url = BASE_URL + '/providers';
+    _headers["Authorization"] = "Bearer $authToken";
+
+    String msg;
+    try {
+      // final responsePayload = await _netUtil.getList(url, headers: _headers);
+      // final providersList = <CustomProviderRequest>[];
+      // for (var data in responsePayload) {
+      //   providersList.add(CustomProvider.fromJson(data));
+      // }
+      // print(providersList.length);
+      // return providersList;
     } on CustomException catch (e) {
       msg = e.msg == null ? PROVIDERS_ERROR_MSG : e.msg;
     } catch (e) {

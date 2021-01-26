@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import 'package:prozone/models/images_model.dart';
 import 'package:prozone/models/models.dart';
 import 'package:prozone/models/provider-type_model.dart';
-import 'package:prozone/models/provider_model.dart';
 import 'package:prozone/models/state_model.dart';
 
 void main() {
@@ -22,7 +21,7 @@ void main() {
     String _createdDate = DateTime.now().toIso8601String();
     String _updateAt = "2021-01-05T00:00:00.000";
 
-    test("State serialised from JSON", () async {
+    test("State Response serialised from JSON", () async {
       final Map<String, dynamic> json = {
         "id": _id,
         "name": _name,

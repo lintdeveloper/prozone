@@ -1,13 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'provider_model.dart';
+part of 'provider-response_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CustomProvider _$CustomProviderFromJson(Map<String, dynamic> json) {
-  return CustomProvider(
+CustomProviderResponse _$CustomProviderResponseFromJson(
+    Map<String, dynamic> json) {
+  return CustomProviderResponse(
     id: json['id'] as int,
     name: json['name'] as String,
     description: json['description'] as String,
@@ -29,7 +30,8 @@ CustomProvider _$CustomProviderFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CustomProviderToJson(CustomProvider instance) =>
+Map<String, dynamic> _$CustomProviderResponseToJson(
+        CustomProviderResponse instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

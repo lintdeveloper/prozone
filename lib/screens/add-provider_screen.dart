@@ -4,9 +4,11 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:prozone/application.dart';
 import 'package:prozone/mixins/index.dart';
+import 'package:prozone/models/customProvider/custom-provider.dart';
 import 'package:prozone/models/models.dart';
 import 'package:prozone/providers/helper_provider.dart';
 import 'package:prozone/utils/consts.dart';
+import 'package:prozone/utils/data.dart';
 import 'package:prozone/utils/utils.dart';
 
 class AddProviderScreen extends StatefulWidget {
@@ -20,28 +22,33 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   ProviderType _selectedProviderType;
+  ActiveStatus _selectedActiveStatus;
   List<ProviderType> _providerTypeList;
   List<CustomState> _customStateList;
   CustomState _selectedState;
+
+  String _providerName;
+  String _providerDescription;
+  String _providerAddress;
+  double _providerRating;
 
   @override
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      setState(() async {
-        _providerTypeList = await getProviderTypeAction(context: context);
-        _customStateList = await getStatesAction(context: context);
-      });
-      setState(() {
-        _selectedProviderType = _providerTypeList[0];
-        _selectedState = _customStateList[0];
-      });
+      await getData();
     });
+  }
+
+  Future<void> getData() async {
+    _providerTypeList = await getProviderTypeAction(context: context);
+    _customStateList = await getStatesAction(context: context);
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final _helper = Provider.of<HelperProvider>(context);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -66,7 +73,41 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
                           child: Icon(Icons.arrow_back, color: BLUE_HUE)),
                       Text("Add Provider",
                           style: TextStyle(color: BLUE_HUE, fontSize: 16)),
-                      Icon(Icons.check, color: GREEN_HUE),
+                      GestureDetector(
+                          onTap: () {
+                            final form = _formKey.currentState;
+                            form.save();
+
+                            if (form.validate()) {
+                              if (_providerName == null ||
+                                  _providerDescription == null ||
+                                  _providerAddress == null ||
+                                  _selectedState == null ||
+                                  _selectedProviderType == null ||
+                                  _selectedActiveStatus == null) {
+                                ShowSnackBar(
+                                    scaffoldKey: _scaffoldKey,
+                                    msg: "All fields needs to be completed");
+                              } else if ((_providerRating).round() == 0) {
+                                ShowSnackBar(
+                                    scaffoldKey: _scaffoldKey,
+                                    msg: "Rating can't be 0");
+                              } else {
+                                addProvider(
+                                    context,
+                                    providerDescription: _providerDescription.trim(),
+                                    providerAddress: _providerAddress.trim(),
+                                    providerType: _selectedProviderType.name,
+                                    providerName: _providerName,
+                                    activeStatus: _selectedActiveStatus.name,
+                                    providerState: _selectedState.name,
+                                    providerRating: (_providerRating).round(),
+                                    helper: _helper
+                                  );
+                                }
+                              }
+                          },
+                          child: Icon(Icons.check, color: GREEN_HUE)),
                     ],
                   ),
                 ),
@@ -79,35 +120,32 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
                           Container(
                             margin: EdgeInsets.only(bottom: 16),
                             child: TextFormField(
-                                autofocus: true,
-                                textInputAction: TextInputAction.next,
-                                // controller: _emailController,
-                                style: TextStyle(fontSize: 14),
-                                decoration: InputDecoration(
-                                    hintText: "Provider name",
-                                    labelText: "Enter provider name",
-                                    contentPadding: EdgeInsets.fromLTRB(
-                                        16.0, 16.0, 16.0, 16.0),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(6)),
-                                        borderSide:
-                                            BorderSide(color: GREEN_HUE)),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(6)),
-                                        borderSide:
-                                            BorderSide(color: GREEN_HUE)),
-                                    filled: false)),
+                              autofocus: true,
+                              textInputAction: TextInputAction.next,
+                              style: TextStyle(fontSize: 14),
+                              decoration: InputDecoration(
+                                  hintText: "Provider name",
+                                  labelText: "Enter provider name",
+                                  contentPadding: EdgeInsets.fromLTRB(
+                                      16.0, 16.0, 16.0, 16.0),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(6)),
+                                      borderSide: BorderSide(color: GREEN_HUE)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(6)),
+                                      borderSide: BorderSide(color: GREEN_HUE)),
+                                  filled: false),
+                              onSaved: (val) => _providerName = val,
+                            ),
                           ),
                           TextFormField(
                             minLines: 2,
                             maxLines: 12,
-                            autofocus: true,
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.multiline,
                             maxLength: 200,
-                            // controller: _emailController,
                             style: TextStyle(fontSize: 14),
                             decoration: InputDecoration(
                                 hintText: "Description",
@@ -124,17 +162,13 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
                                         BorderRadius.all(Radius.circular(6)),
                                     borderSide: BorderSide(color: GREEN_HUE)),
                                 filled: false),
-                            // onSaved: (val) => _email = val,
-                            // onFieldSubmitted: (v) {
-                            //   FocusScope.of(context).requestFocus(focus);
-                            // }
+                            onSaved: (val) => _providerDescription = val,
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 12),
                             child: TextFormField(
                               minLines: 2,
                               maxLines: 12,
-                              autofocus: true,
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.multiline,
                               maxLength: 50,
@@ -154,10 +188,7 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
                                           BorderRadius.all(Radius.circular(6)),
                                       borderSide: BorderSide(color: GREEN_HUE)),
                                   filled: false),
-                              // onSaved: (val) => _email = val,
-                              // onFieldSubmitted: (v) {
-                              //   FocusScope.of(context).requestFocus(focus);
-                              // }
+                              onSaved: (val) => _providerAddress = val,
                             ),
                           ),
                           _customStateList == null
@@ -181,18 +212,17 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
                                         isExpanded: true,
                                         onChanged: (CustomState state) {
                                           setState(() {
-                                            _selectedState =
-                                                state;
+                                            _selectedState = state;
                                           });
                                         },
                                         iconEnabledColor: GREEN_HUE,
-                                        value: _customStateList[0],
+                                        value: null,
                                         style: TextStyle(
                                             fontSize: 14,
                                             color: BLUE_HUE.withOpacity(0.7)),
-                                        items: _customStateList.map<
-                                                DropdownMenuItem<CustomState>>(
-                                            (CustomState state) {
+                                        items: _customStateList
+                                            .map<DropdownMenuItem<CustomState>>(
+                                                (CustomState state) {
                                           return DropdownMenuItem<CustomState>(
                                               value: state,
                                               child: Text(state.name));
@@ -226,7 +256,7 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
                                           });
                                         },
                                         iconEnabledColor: GREEN_HUE,
-                                        value: _providerTypeList[0],
+                                        value: null,
                                         style: TextStyle(
                                             fontSize: 14,
                                             color: BLUE_HUE.withOpacity(0.7)),
@@ -257,25 +287,25 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
                                       margin:
                                           EdgeInsets.only(bottom: 14, left: 8),
                                       child:
-                                          DropdownButtonFormField<ProviderType>(
+                                          DropdownButtonFormField<ActiveStatus>(
                                         isExpanded: true,
-                                        onChanged: (ProviderType providerType) {
+                                        onChanged: (ActiveStatus activeStatus) {
                                           setState(() {
-                                            _selectedProviderType =
-                                                providerType;
+                                            _selectedActiveStatus =
+                                                activeStatus;
                                           });
                                         },
                                         iconEnabledColor: GREEN_HUE,
-                                        value: _providerTypeList[0],
+                                        value: null,
                                         style: TextStyle(
                                             fontSize: 14,
                                             color: BLUE_HUE.withOpacity(0.7)),
-                                        items: _providerTypeList.map<
-                                                DropdownMenuItem<ProviderType>>(
-                                            (ProviderType providerType) {
-                                          return DropdownMenuItem<ProviderType>(
-                                              value: providerType,
-                                              child: Text(providerType.name));
+                                        items: activeStatusList.map<
+                                                DropdownMenuItem<ActiveStatus>>(
+                                            (ActiveStatus activeStatus) {
+                                          return DropdownMenuItem<ActiveStatus>(
+                                              value: activeStatus,
+                                              child: Text(activeStatus.name));
                                         }).toList(),
                                       ),
                                     )
@@ -309,6 +339,9 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
                                     ),
                                     onRatingUpdate: (rating) {
                                       print(rating);
+                                      setState(() {
+                                        _providerRating = rating;
+                                      });
                                     },
                                   ),
                                 ],
@@ -396,5 +429,28 @@ class _AddProviderScreenState extends State<AddProviderScreen> {
   void errorCallback(String msg) {
     Navigator.of(context).pop();
     ShowSnackBar(scaffoldKey: _scaffoldKey, msg: msg);
+  }
+
+  Future addProvider(BuildContext context, {String providerDescription,
+    String providerName, String providerAddress, String providerState,
+    String providerType, String activeStatus, int providerRating, HelperProvider helper}) async {
+    ShowDialog(context: context);
+    String _token;
+    final application = Application.instance();
+    await application.getToken("authToken").then((token) {
+      _token = token["value"];
+    });
+
+    List<CustomProviderRequest> responsePayload = await helper.addCustomProvider(
+        authToken: _token, errorCallback: errorCallback, requestPayload: CustomProviderRequest(
+      name: providerName,
+      description: providerDescription,
+      rating: providerRating,
+      address: providerAddress,
+      activeStatus: activeStatus,
+      providerType: providerType
+    ).toJson());
+    return responsePayload;
+
   }
 }

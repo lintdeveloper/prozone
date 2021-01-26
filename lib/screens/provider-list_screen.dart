@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:prozone/models/provider_model.dart';
+import 'package:prozone/models/customProvider/custom-provider.dart';
 import 'package:prozone/screens/provider-item_screen.dart';
 
 class ProviderList extends StatelessWidget {
-  final List<CustomProvider> customProviderList;
+  final List<CustomProviderResponse> customProviderList;
 
   ProviderList({Key key, this.customProviderList}):
       super(key: key);
