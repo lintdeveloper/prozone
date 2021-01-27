@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:prozone/application.dart';
 import 'package:prozone/mixins/index.dart';
@@ -19,6 +20,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  List<Asset> images = List<Asset>();
+  String _error = 'No Error Dectected';
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Icon(Icons.search, size: 24, color: BLUE_HUE.withOpacity(0.3),)),
                           Expanded(
                               child: Text(
-                            "Search for Name, Location of Provider",
+                            "Search for name or location",
                             style: TextStyle(
                                 fontSize: 14, color: BLUE_HUE.withOpacity(0.3)),
                             overflow: TextOverflow.ellipsis,
@@ -90,7 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       side: BorderSide(width: 2, color: GREEN_HUE),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      loadImages();
+                    },
                     child: Text(
                       'FILTER',
                       style: TextStyle(color: GREEN_HUE, letterSpacing: 2),
@@ -119,6 +124,46 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }),
     );
+  }
+
+
+  Future<void> loadImages() async {
+    List<Asset> resultList = List<Asset>();
+    String error = 'No Error Dectected';
+
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 7,
+        enableCamera: true,
+        selectedAssets: images,
+        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: MaterialOptions(
+          statusBarColor: "#678abc",
+          actionBarTitle: "Media",
+          allViewTitle: "All Photos",
+          useDetailsView: false,
+          selectCircleStrokeColor: "#000000",
+          selectionLimitReachedText: "You can't select more than 7",
+        ),
+      );
+    } on NoImagesSelectedException catch (e) {
+      print("Cancel");
+      print(e);
+    } on Exception catch (e) {
+      print("DO something");
+      print(e);
+      // Do something
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      images = resultList;
+      print("Result List");
+      print(resultList);
+      // sliderImageList = resultList;
+      _error = error;
+    });
   }
 
   Future<List<CustomProviderResponse>> getProviderListAction(

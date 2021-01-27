@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:prozone/application.dart';
 import 'package:prozone/mixins/index.dart';
@@ -10,6 +9,7 @@ import 'package:prozone/providers/helper_provider.dart';
 import 'package:prozone/utils/consts.dart';
 import 'package:prozone/utils/data.dart';
 import 'package:prozone/utils/utils.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class AddProviderScreen extends StatefulWidget {
   static String routeName = "add-provider";
