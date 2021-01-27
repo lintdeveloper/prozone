@@ -59,7 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (snapshot.hasError)
                   print(snapshot.error);
                 return snapshot.hasData ? ProviderList(customProviderList: snapshot.data)
-                    :  Center(child: CircularProgressIndicator());
+                    :  Container(
+                        margin: EdgeInsets.only(top: size.height * 0.40),
+                        child: Center(child: CircularProgressIndicator()));
               }),
         );
       }),
