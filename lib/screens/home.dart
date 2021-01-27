@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:prozone/application.dart';
 import 'package:prozone/mixins/index.dart';
 import 'package:prozone/models/customProvider/custom-provider.dart';
@@ -6,7 +8,6 @@ import 'package:prozone/providers/helper_provider.dart';
 import 'package:prozone/screens/add-provider_screen.dart';
 import 'package:prozone/screens/provider-list_screen.dart';
 import 'package:prozone/utils/consts.dart';
-import 'package:provider/provider.dart';
 import 'package:prozone/utils/utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,7 +18,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -32,7 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          "Provider", style: TextStyle(color: BLUE_HUE, fontSize: 18),),
+          "Provider",
+          style: TextStyle(color: BLUE_HUE, fontSize: 18),
+        ),
         centerTitle: true,
         actions: [
           GestureDetector(
@@ -44,25 +46,76 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
         bottom: PreferredSize(
-          child: Divider(
-            color: GREEN_HUE,
-            height: 1,
-          )
-        ),
+            child: Divider(
+          color: GREEN_HUE,
+          height: 1,
+        )),
       ),
       body: ResponsiveSafeArea(builder: (context, size) {
-        return SingleChildScrollView(
-          child: FutureBuilder<List<CustomProviderResponse>>(
-              future: getProviderListAction(
-                  context: context, helper: _helper),
-              builder: (context, snapshot) {
-                if (snapshot.hasError)
-                  print(snapshot.error);
-                return snapshot.hasData ? ProviderList(customProviderList: snapshot.data)
-                    :  Container(
-                        margin: EdgeInsets.only(top: size.height * 0.40),
-                        child: Center(child: CircularProgressIndicator()));
-              }),
+        return Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 16, right: 14),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 38,
+                      margin: EdgeInsets.only(right: 6),
+                      width: size.width * .65,
+                      decoration: BoxDecoration(
+                        color: BLUE_HUE.withOpacity(0.1),
+                        borderRadius: BorderRadius.all(Radius.circular(6))
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                              margin: EdgeInsets.only(left: 4),
+                              child: Icon(Icons.search, size: 24, color: BLUE_HUE.withOpacity(0.3),)),
+                          Expanded(
+                              child: Text(
+                            "Search for Name, Location of Provider",
+                            style: TextStyle(
+                                fontSize: 14, color: BLUE_HUE.withOpacity(0.3)),
+                            overflow: TextOverflow.ellipsis,
+                          ))
+                        ],
+                      ),
+                    ),
+                  ),
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                      side: BorderSide(width: 2, color: GREEN_HUE),
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      'FILTER',
+                      style: TextStyle(color: GREEN_HUE, letterSpacing: 2),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: FutureBuilder<List<CustomProviderResponse>>(
+                    future: getProviderListAction(
+                        context: context, helper: _helper),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) print(snapshot.error);
+                      return snapshot.hasData
+                          ? ProviderList(customProviderList: snapshot.data)
+                          : Container(
+                              margin: EdgeInsets.only(top: size.height * 0.40),
+                              child:
+                                  Center(child: CircularProgressIndicator()));
+                    }),
+              ),
+            ),
+          ],
         );
       }),
     );
@@ -75,8 +128,9 @@ class _HomeScreenState extends State<HomeScreen> {
     await application.getToken("authToken").then((token) {
       _token = token["value"];
     });
-    List<CustomProviderResponse> responsePayload = await helper.getCustomProviderResponseList(
-        authToken: _token, errorCallback: errorCallback);
+    List<CustomProviderResponse> responsePayload =
+        await helper.getCustomProviderResponseList(
+            authToken: _token, errorCallback: errorCallback);
     return responsePayload;
   }
 
