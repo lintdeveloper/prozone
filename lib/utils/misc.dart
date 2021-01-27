@@ -85,3 +85,11 @@ class ShowSnackBar {
      },
    );
  }
+
+List<Widget> getRatings(int rating) {
+  final starWidgets = <Widget>[];
+  for (var i = 0; i < rating; i++) {
+    starWidgets.add(Icon(Icons.star, size: 16, color: GREEN_HUE));
+  }
+  return starWidgets;
+}

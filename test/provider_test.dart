@@ -79,8 +79,8 @@ void main() {
         "description": _description,
         "rating": _rating,
         "address": _address,
-        "activeStatus": _activeStatus,
-        "providerType": {
+        "active_status": _activeStatus,
+        "provider_type": {
           "id": 1,
           "name": "type-1",
           "createdAt": _createdDate,
@@ -99,8 +99,8 @@ void main() {
           "createdAt": _createdDate,
           "updatedAt": _updateAt
         }],
-        "createdAt": _createdDate,
-        "updatedAt": _updateAt
+        "created_at": _createdDate,
+        "updated_at": _updateAt
       };
 
       final actual = CustomProviderResponse.fromJson(json);

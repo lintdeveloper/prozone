@@ -14,10 +14,10 @@ CustomProviderResponse _$CustomProviderResponseFromJson(
     description: json['description'] as String,
     rating: json['rating'] as int,
     address: json['address'] as String,
-    activeStatus: json['activeStatus'] as String,
-    providerType: json['providerType'] == null
+    activeStatus: json['active_status'] as String,
+    providerType: json['provider_type'] == null
         ? null
-        : ProviderType.fromJson(json['providerType'] as Map<String, dynamic>),
+        : ProviderType.fromJson(json['provider_type'] as Map<String, dynamic>),
     state: json['state'] == null
         ? null
         : CustomState.fromJson(json['state'] as Map<String, dynamic>),
@@ -25,8 +25,8 @@ CustomProviderResponse _$CustomProviderResponseFromJson(
         ?.map((e) =>
             e == null ? null : Images.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    createdAt: json['createdAt'] as String,
-    updatedAt: json['updatedAt'] as String,
+    createdAt: json['created_at'] as String,
+    updatedAt: json['updated_at'] as String,
   );
 }
 

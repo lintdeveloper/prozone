@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:prozone/models/customProvider/custom-provider.dart';
 import 'package:prozone/models/images_model.dart';
 import 'package:prozone/utils/consts.dart';
+import 'package:prozone/utils/utils.dart';
+import 'package:prozone/widget/show-provider_widget.dart';
 
 class ProviderItem extends StatelessWidget {
   final List<CustomProviderResponse> providerList;
@@ -23,18 +25,20 @@ class ProviderItem extends StatelessWidget {
       title: Text(providerList[index].name,
           style: TextStyle(fontSize: 16, color: BLUE_HUE)),
       subtitle: Row(children: getRatings(providerList[index].rating)),
-      trailing:
-          Icon(Icons.arrow_forward_ios_outlined, size: 16, color: GREEN_HUE),
+      trailing: GestureDetector(
+              onTap: (){
+                print(providerList[index]);
+                showModalBottomSheet<void> (
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ShowProviderBottomSheet(providerList[index]);
+                    }
+                );
+              },
+              child: Icon(Icons.arrow_forward_ios_outlined, size: 16, color: GREEN_HUE)),
     );
   }
 
-  List<Widget> getRatings(int rating) {
-    final starWidgets = <Widget>[];
-    for (var i = 0; i < rating; i++) {
-      starWidgets.add(Icon(Icons.star, size: 16, color: GREEN_HUE));
-    }
-    return starWidgets;
-  }
 
   String getImage(List<Images> images) {
     if (images.length == 0) {

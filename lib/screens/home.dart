@@ -51,22 +51,16 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: ResponsiveSafeArea(builder: (context, size) {
-        return Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: FutureBuilder<List<CustomProviderResponse>>(
-                    future: getProviderListAction(
-                        context: context, helper: _helper),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError)
-                        print(snapshot.error);
-                      return snapshot.hasData ? ProviderList(customProviderList: snapshot.data)
-                          :  Center(child: CircularProgressIndicator());
-                    }),
-              ),
-            )
-          ],
+        return SingleChildScrollView(
+          child: FutureBuilder<List<CustomProviderResponse>>(
+              future: getProviderListAction(
+                  context: context, helper: _helper),
+              builder: (context, snapshot) {
+                if (snapshot.hasError)
+                  print(snapshot.error);
+                return snapshot.hasData ? ProviderList(customProviderList: snapshot.data)
+                    :  Center(child: CircularProgressIndicator());
+              }),
         );
       }),
     );
