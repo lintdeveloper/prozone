@@ -14,7 +14,7 @@ CustomProviderRequest _$CustomProviderRequestFromJson(
     rating: json['rating'] as int,
     address: json['address'] as String,
     activeStatus: json['activeStatus'] as String,
-    providerType: json['providerType'] as String,
+    providerType: json['provider_type'] as String,
     state: json['state'] as String,
   );
 }
@@ -26,7 +26,7 @@ Map<String, dynamic> _$CustomProviderRequestToJson(
       'description': instance.description,
       'rating': instance.rating,
       'address': instance.address,
-      'activeStatus': instance.activeStatus,
+      'active_status': instance.activeStatus,
       'state': instance.state,
-      'providerType': instance.providerType,
+      'provider_type': instance.providerType,
     };

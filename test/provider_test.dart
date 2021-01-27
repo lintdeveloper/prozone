@@ -83,21 +83,21 @@ void main() {
         "provider_type": {
           "id": 1,
           "name": "type-1",
-          "createdAt": _createdDate,
-          "updatedAt": _updateAt
+          "created_at": _createdDate,
+          "updated_at": _updateAt
         },
         "state": {
           "id": 1,
           "name": "state-1",
-          "createdAt": _createdDate,
-          "updatedAt": _updateAt
+          "created_at": _createdDate,
+          "updated_at": _updateAt
         },
         "images": [{
           "id": 1,
           "name":"img-1",
           "url": "url-1",
-          "createdAt": _createdDate,
-          "updatedAt": _updateAt
+          "created_at": _createdDate,
+          "updated_at": _updateAt
         }],
         "created_at": _createdDate,
         "updated_at": _updateAt

@@ -26,19 +26,17 @@ class ProviderItem extends StatelessWidget {
           style: TextStyle(fontSize: 16, color: BLUE_HUE)),
       subtitle: Row(children: getRatings(providerList[index].rating)),
       trailing: GestureDetector(
-              onTap: (){
-                print(providerList[index]);
-                showModalBottomSheet<void> (
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ShowProviderBottomSheet(providerList[index]);
-                    }
-                );
-              },
-              child: Icon(Icons.arrow_forward_ios_outlined, size: 16, color: GREEN_HUE)),
+          onTap: () {
+            showModalBottomSheet<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return ShowProviderBottomSheet(providerList[index]);
+                });
+          },
+          child: Icon(Icons.arrow_forward_ios_outlined,
+              size: 16, color: GREEN_HUE)),
     );
   }
-
 
   String getImage(List<Images> images) {
     if (images.length == 0) {

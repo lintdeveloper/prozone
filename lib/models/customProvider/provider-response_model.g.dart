@@ -25,8 +25,8 @@ CustomProviderResponse _$CustomProviderResponseFromJson(
         ?.map((e) =>
             e == null ? null : Images.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    createdAt: json['createdAt'] as String,
-    updatedAt: json['updatedAt'] as String,
+    createdAt: json['created_at'] as String,
+    updatedAt: json['updated_at'] as String,
   );
 }
 
@@ -38,10 +38,10 @@ Map<String, dynamic> _$CustomProviderResponseToJson(
       'description': instance.description,
       'rating': instance.rating,
       'address': instance.address,
-      'activeStatus': instance.activeStatus,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
+      'active_status': instance.activeStatus,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
       'state': instance.state,
-      'providerType': instance.providerType,
+      'provider_type': instance.providerType,
       'images': instance.images,
     };

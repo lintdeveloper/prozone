@@ -4,9 +4,10 @@ import 'package:prozone/screens/provider-item_screen.dart';
 
 class ProviderList extends StatelessWidget {
   final List<CustomProviderResponse> customProviderList;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
-  ProviderList({Key key, this.customProviderList}):
-      super(key: key);
+  ProviderList({Key key, this.customProviderList, this.scaffoldKey})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +25,13 @@ class ProviderList extends StatelessWidget {
     }
 
     return ListView.builder(
-      shrinkWrap: true,
-      physics: ClampingScrollPhysics(),
-      itemCount: customProviderList.length,
-      itemBuilder: (context, index) {
-        return ProviderItem(providerList: customProviderList, index: index);
-      }
-    );
+        shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
+        itemCount: customProviderList.length,
+        itemBuilder: (context, index) {
+          return ProviderItem(
+              providerList: customProviderList,
+              index: index);
+        });
   }
 }

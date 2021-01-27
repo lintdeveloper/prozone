@@ -12,7 +12,7 @@ import 'package:prozone/utils/utils.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class AddProviderScreen extends StatefulWidget {
-  static String routeName = "add-provider";
+  static String routeName = "/add-provider";
 
   @override
   _AddProviderScreenState createState() => _AddProviderScreenState();

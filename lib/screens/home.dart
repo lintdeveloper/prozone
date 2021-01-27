@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context, snapshot) {
                       if (snapshot.hasError) print(snapshot.error);
                       return snapshot.hasData
-                          ? ProviderList(customProviderList: snapshot.data)
+                          ? ProviderList(customProviderList: snapshot.data, scaffoldKey: _scaffoldKey)
                           : Container(
                               margin: EdgeInsets.only(top: size.height * 0.40),
                               child:
