@@ -88,6 +88,9 @@ class ShowSnackBar {
 
 List<Widget> getRatings(int rating) {
   final starWidgets = <Widget>[];
+  if (rating == null)
+    return starWidgets;
+
   for (var i = 0; i < rating; i++) {
     starWidgets.add(Icon(Icons.star, size: 16, color: GREEN_HUE));
   }

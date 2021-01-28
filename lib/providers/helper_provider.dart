@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prozone/enums/enums.dart';
 import 'package:prozone/models/customProvider/custom-provider.dart';
 import 'package:prozone/models/provider-type_model.dart';
 import 'package:prozone/models/state_model.dart';
@@ -10,6 +11,23 @@ class HelperProvider extends BaseHelper with ChangeNotifier {
   NetworkUtil _netUtil = new NetworkUtil();
   Map<String, String> _headers = {'Content-Type': 'application/json'};
   Map<String, String> _noContentTypeHeader = {};
+  Status _activeStatus = Status.all;
+  ProviderType _providerType;
+  List<ProviderType> _providerTypeList;
+
+  List<ProviderType> get providerTypeList => _providerTypeList;
+
+  set providerTypeList(List<ProviderType> value) {
+    _providerTypeList = value;
+    notifyListeners();
+  }
+
+  Status get activeStatus => _activeStatus;
+
+  set activeStatus(Status value) {
+    _activeStatus = value;
+    notifyListeners();
+  }
 
   @override
   Future<List<CustomProviderResponse>> getCustomProviderResponseList(
@@ -129,5 +147,12 @@ class HelperProvider extends BaseHelper with ChangeNotifier {
     }
     errorCallback(msg);
     throw CustomException(msg: msg);
+  }
+
+  ProviderType get providerType => _providerType;
+
+  set providerType(ProviderType value) {
+    _providerType = value;
+    notifyListeners();
   }
 }
