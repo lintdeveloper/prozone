@@ -10,6 +10,7 @@ import 'package:prozone/screens/add-provider_screen.dart';
 import 'package:prozone/screens/provider-list_screen.dart';
 import 'package:prozone/utils/consts.dart';
 import 'package:prozone/utils/utils.dart';
+import 'package:prozone/widget/custom-search-delegate_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home_screen";
@@ -70,19 +71,27 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: BLUE_HUE.withOpacity(0.1),
                         borderRadius: BorderRadius.all(Radius.circular(6))
                       ),
-                      child: Row(
-                        children: [
-                          Container(
-                              margin: EdgeInsets.only(left: 4),
-                              child: Icon(Icons.search, size: 24, color: BLUE_HUE.withOpacity(0.3),)),
-                          Expanded(
-                              child: Text(
-                            "Search for name or location",
-                            style: TextStyle(
-                                fontSize: 14, color: BLUE_HUE.withOpacity(0.3)),
-                            overflow: TextOverflow.ellipsis,
-                          ))
-                        ],
+                      child: GestureDetector(
+                        onTap: (){
+                          showSearch(
+                            context: context,
+                            delegate: CustomSearchDelegate(),
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                                margin: EdgeInsets.only(left: 4),
+                                child: Icon(Icons.search, size: 24, color: BLUE_HUE.withOpacity(0.3),)),
+                            Expanded(
+                                child: Text(
+                              "Search for name or location",
+                              style: TextStyle(
+                                  fontSize: 14, color: BLUE_HUE.withOpacity(0.3)),
+                              overflow: TextOverflow.ellipsis,
+                            ))
+                          ],
+                        ),
                       ),
                     ),
                   ),

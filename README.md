@@ -1,16 +1,49 @@
-# prozone
+# Prozone
+<img src="prozone.png"  width="60%" height="60%" />
 
-A new Flutter application.
+A Healthcare Provider aggregator app
 
-## Getting Started
+## Description
+A mobile application for a provider aggregation by provider officers for managing providers in their network
 
-This project is a starting point for a Flutter application.
+### Features
 
-A few resources to get you started if this is your first Flutter project:
+The following features are meant to be implemented on the app. (Can't list all 😁)
+- [x] View all providers registered in the network
+- [x] View Details of a provider
+- [x] Add Providers
+- [x] Add Images to a providers
+- [x] Update providers details (Active status, description, type etc.)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### Architecture
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The project uses a clean architecture & MVVM. The following is the major components folders/files of my project
+1) /screens - It is my View, it contains the various screen UI on the app
+2) /providers - This is my view model, which interacts directly with the UI and also with the network service
+3) /models - This contains my model classes
+4) /widgets - This contains my widget
+6) /test - This contains my unit test
+
+Others include:
+/common
+/enums
+/mixins
+/utils etc
+
+### Built With
+
+Following is list of  libraries used in app.
+1)
+
+## Widgets
+
+Following is list of important wigdets used in app.(Can't list all 😁)
+1)
+
+## Authors
+
+* **Musa Musa A.**  - [lintdeveloper](https://github.com/lintdeveloper)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details

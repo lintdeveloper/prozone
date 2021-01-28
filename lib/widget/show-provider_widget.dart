@@ -13,7 +13,7 @@ import 'package:prozone/screens/update-provider_screen.dart';
 import 'package:prozone/utils/utils.dart';
 
 class ShowProviderBottomSheet extends StatefulWidget {
-  CustomProviderResponse customProviderResponse;
+  final CustomProviderResponse customProviderResponse;
 
   ShowProviderBottomSheet(this.customProviderResponse);
 
@@ -84,6 +84,7 @@ class _ShowProviderBottomSheetState extends State<ShowProviderBottomSheet> {
                     margin: EdgeInsets.only(right: 16, top: 4),
                     child: GestureDetector(
                       onTap: () {
+                        Navigator.pop(context);
                         Navigator.pushNamed(context,
                             UpdateProviderScreen.routeName,
                             arguments: widget.customProviderResponse);
@@ -365,7 +366,7 @@ class _ShowProviderBottomSheetState extends State<ShowProviderBottomSheet> {
         selectedAssets: images,
         cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
         materialOptions: MaterialOptions(
-          statusBarColor: "#678abc",
+          statusBarColor: "#00FF00",
           actionBarTitle: "Media",
           allViewTitle: "All Photos",
           useDetailsView: false,
