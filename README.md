@@ -1,5 +1,5 @@
 # Prozone
-<img src="prozone.png"  width="60%" height="60%" />
+<img src="prozone.png"  width="40%" height="40%" />
 
 A Healthcare Provider aggregator app
 
