@@ -444,8 +444,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if ((_helper.activeStatus == Status.all) &&
         (_helper.providerType == null)) {
-      print("HERE");
       return responsePayload;
+    }else if ((_helper.activeStatus == Status.all) &&
+        (_helper.providerType != null)) {
+      return responsePayload
+          .where((provider) => provider.providerType == _helper.providerType).toList();
     } else if ((_helper.activeStatus == Status.active) &&
         (_helper.providerType == null)) {
       return responsePayload
