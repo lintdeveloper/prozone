@@ -6,6 +6,7 @@ import 'package:prozone/mixins/index.dart';
 import 'package:prozone/models/customProvider/custom-provider.dart';
 import 'package:prozone/models/models.dart';
 import 'package:prozone/providers/helper_provider.dart';
+import 'package:prozone/screens/custom-name-search_screen.dart';
 import 'package:prozone/utils/consts.dart';
 import 'package:prozone/utils/utils.dart';
 
@@ -88,7 +89,7 @@ class _SearchOptionsScreenState extends State<SearchOptionsScreen> {
                               fontSize: 12, color: BLUE_HUE, fontWeight: FontWeight.w400),
                         ))),
                 onPressed: () {
-
+                  Navigator.pushNamed(context, CustomNameSearchScreen.routeName);
                 },
                 backgroundColor: Colors.grey[200],
                 shape: StadiumBorder(

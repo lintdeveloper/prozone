@@ -14,7 +14,6 @@ import 'package:prozone/screens/provider-list_screen.dart';
 import 'package:prozone/screens/search-options_screen.dart';
 import 'package:prozone/utils/consts.dart';
 import 'package:prozone/utils/utils.dart';
-import 'package:prozone/widget/custom-search-delegate_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home_screen";
@@ -25,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  List<Asset> images = List<Asset>();
+  List<Asset> images = <Asset>[];
   String _error = 'No Error Dectected';
   bool isFilter = false;
 
@@ -61,8 +60,9 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             margin: EdgeInsets.only(right: 8),
             child: IconButton(
-                icon: Icon(Icons.add, color: BLUE_HUE),
-              onPressed: () => Navigator.pushNamed(context, AddProviderScreen.routeName),
+              icon: Icon(Icons.add, color: BLUE_HUE),
+              onPressed: () =>
+                  Navigator.pushNamed(context, AddProviderScreen.routeName),
             ),
           )
         ],
@@ -355,7 +355,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     BorderRadius.all(Radius.circular(6))),
                             child: GestureDetector(
                               onTap: () {
-                               Navigator.pushNamed(context, SearchOptionsScreen.routeName);
+                                Navigator.pushNamed(
+                                    context, SearchOptionsScreen.routeName);
                               },
                               child: Row(
                                 children: [
@@ -478,6 +479,14 @@ class _HomeScreenState extends State<HomeScreen> {
           .toList();
     }
     return responsePayload;
+  }
+
+  Stream<List<CustomProviderResponse>> getProvidersListStream({BuildContext context,
+      Duration refreshTime, HelperProvider helper}) async* {
+    while (true) {
+      await Future.delayed(refreshTime);
+      yield await getProviderListAction(context: context, helper: helper);
+    }
   }
 
   Future<List<ProviderType>> getProviderTypeAction(
