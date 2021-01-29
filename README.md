@@ -13,7 +13,11 @@ The following features are meant to be implemented on the app. (Can't list all �
 - [x] View Details of a provider
 - [x] Add Providers
 - [x] Add Images to a providers
+
+### Additional Features
 - [x] Update providers details (Active status, description, type etc.)
+- [x] Filter providers based on type and onboarding status
+- []  Search for providers using the provider name and/or location (Wanted to implement this but time couldn't permit me 😁)
 
 ### Architecture
 
@@ -45,5 +49,4 @@ Following is list of important wigdets used in app.(Can't list all 😁)
 * **Musa Musa A.**  - [lintdeveloper](https://github.com/lintdeveloper)
 
 ## License
-
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
