@@ -67,11 +67,6 @@ void main() {
         createdAt: _createdDate,
         updatedAt: _updateAt
       );
-      CustomState _customState = CustomState(
-          id: 1,
-          name: "state-1",
-          createdAt: _createdDate,
-          updatedAt: _updateAt);
 
       final Map<String, dynamic> json = {
         "id": _id,
@@ -83,12 +78,6 @@ void main() {
         "provider_type": {
           "id": 1,
           "name": "type-1",
-          "created_at": _createdDate,
-          "updated_at": _updateAt
-        },
-        "state": {
-          "id": 1,
-          "name": "state-1",
           "created_at": _createdDate,
           "updated_at": _updateAt
         },
@@ -112,7 +101,6 @@ void main() {
           address: _address,
           providerType: mockCustomProvider,
           activeStatus: _activeStatus,
-          state: _customState,
           images: mockImages,
           createdAt: _createdDate,
           updatedAt: _updateAt,
