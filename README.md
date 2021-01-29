@@ -17,7 +17,7 @@ The following features are meant to be implemented on the app. (Can't list all �
 ### Additional Features
 - [x] Update providers details (Active status, description, type etc.)
 - [x] Filter providers based on type and onboarding status
-- []  Search for providers using the provider name and/or location (Wanted to implement this but time couldn't permit me 😁)
+- [ ] Search for providers using the provider name and/or location (Wanted to implement this but time couldn't permit me 😁)
 
 ### Architecture
 
