@@ -11,6 +11,7 @@ import 'package:prozone/models/models.dart';
 import 'package:prozone/providers/helper_provider.dart';
 import 'package:prozone/screens/add-provider_screen.dart';
 import 'package:prozone/screens/provider-list_screen.dart';
+import 'package:prozone/screens/search-options_screen.dart';
 import 'package:prozone/utils/consts.dart';
 import 'package:prozone/utils/utils.dart';
 import 'package:prozone/widget/custom-search-delegate_screen.dart';
@@ -57,19 +58,19 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         centerTitle: true,
         actions: [
-          GestureDetector(
-            onTap: () =>
-                Navigator.pushNamed(context, AddProviderScreen.routeName),
-            child: Container(
-                margin: EdgeInsets.only(right: 16),
-                child: Icon(Icons.add, color: BLUE_HUE)),
+          Container(
+            margin: EdgeInsets.only(right: 8),
+            child: IconButton(
+                icon: Icon(Icons.add, color: BLUE_HUE),
+              onPressed: () => Navigator.pushNamed(context, AddProviderScreen.routeName),
+            ),
           )
         ],
         bottom: PreferredSize(
             child: Divider(
-              color: GREEN_HUE,
-              height: 1,
-            )),
+          color: GREEN_HUE,
+          height: 1,
+        )),
       ),
       body: ResponsiveSafeArea(builder: (context, size) {
         return Column(
@@ -78,351 +79,352 @@ class _HomeScreenState extends State<HomeScreen> {
               margin: EdgeInsets.only(left: 16, right: 14),
               child: isFilter
                   ? Container(
-                color: LIGHT_GREEN_HUE,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      color: LIGHT_GREEN_HUE,
+                      child: Column(
                         children: [
-                          Text("Filters",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16)),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                isFilter = false;
-                              });
-                            },
+                          Container(
+                            margin: EdgeInsets.only(top: 12),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Close ",
+                                Text("Filters",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 16)),
-                                Icon(LineIcons.close, color: GREEN_HUE),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      isFilter = false;
+                                    });
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text("Close ",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16)),
+                                      Icon(LineIcons.close, color: GREEN_HUE),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 6),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text("Selected Status :",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14)),
+                          ),
                           Container(
-                            margin: EdgeInsets.only(left: 4),
-                            child: Chip(
-                              elevation: 2.0,
-                              label: Container(
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 12),
-                                  height: 20,
-                                  child: Center(
-                                      child: Text(
-                                        _selectedActiveStatus,
+                            margin: EdgeInsets.only(top: 6),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text("Selected Status :",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14)),
+                                Container(
+                                  margin: EdgeInsets.only(left: 4),
+                                  child: Chip(
+                                    elevation: 2.0,
+                                    label: Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 12),
+                                        height: 20,
+                                        child: Center(
+                                            child: Text(
+                                          _selectedActiveStatus,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600),
+                                        ))),
+                                    backgroundColor: GREEN_HUE,
+                                    shape: StadiumBorder(
+                                        side: BorderSide(
+                                      width: 1,
+                                      color: Colors.greenAccent,
+                                    )),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            margin: EdgeInsets.only(top: 6),
+                            child: Wrap(
+                              alignment: WrapAlignment.start,
+                              children: [
+                                ActionChip(
+                                  elevation: isAllStatus ? 12.0 : 2.0,
+                                  padding: EdgeInsets.all(2.0),
+                                  label: Container(
+                                      width: 40,
+                                      height: 20,
+                                      child: Center(
+                                          child: Text(
+                                        'All',
                                         style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600),
+                                            color: BLUE_HUE,
+                                            fontWeight: FontWeight.w400),
                                       ))),
-                              backgroundColor: GREEN_HUE,
-                              shape: StadiumBorder(
-                                  side: BorderSide(
+                                  onPressed: () {
+                                    setState(() {
+                                      _selectedActiveStatus = "All";
+                                    });
+                                  },
+                                  backgroundColor: Colors.grey[200],
+                                  shape: StadiumBorder(
+                                      side: BorderSide(
                                     width: 1,
                                     color: Colors.greenAccent,
                                   )),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 8),
+                                  child: ActionChip(
+                                    elevation: isAllStatus ? 12.0 : 2.0,
+                                    padding: EdgeInsets.all(2.0),
+                                    label: Container(
+                                        width: 60,
+                                        height: 20,
+                                        child: Center(
+                                            child: Text(
+                                          'Active',
+                                          style: TextStyle(
+                                              color: BLUE_HUE,
+                                              fontWeight: FontWeight.w400),
+                                        ))),
+                                    onPressed: () {
+                                      setState(() {
+                                        _selectedActiveStatus = "Active";
+                                      });
+                                    },
+                                    backgroundColor: Colors.grey[200],
+                                    shape: StadiumBorder(
+                                        side: BorderSide(
+                                      width: 1,
+                                      color: Colors.greenAccent,
+                                    )),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 4),
+                                  child: ActionChip(
+                                    elevation: 8.0,
+                                    padding: EdgeInsets.all(2.0),
+                                    label: Container(
+                                        width: 60,
+                                        height: 20,
+                                        child: Center(
+                                            child: Text(
+                                          'Pending',
+                                          style: TextStyle(
+                                              color: BLUE_HUE,
+                                              fontWeight: FontWeight.w400),
+                                        ))),
+                                    onPressed: () {
+                                      setState(() {
+                                        _selectedActiveStatus = "Pending";
+                                      });
+                                    },
+                                    backgroundColor: Colors.grey[200],
+                                    shape: StadiumBorder(
+                                        side: BorderSide(
+                                      width: 1,
+                                      color: Colors.greenAccent,
+                                    )),
+                                  ),
+                                )
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      margin: EdgeInsets.only(top: 6),
-                      child: Wrap(
-                        alignment: WrapAlignment.start,
-                        children: [
-                          ActionChip(
-                            elevation: isAllStatus ? 12.0 : 2.0,
-                            padding: EdgeInsets.all(2.0),
-                            label: Container(
-                                width: 40,
-                                height: 20,
-                                child: Center(
-                                    child: Text(
-                                      'All',
-                                      style: TextStyle(
-                                          color: BLUE_HUE,
-                                          fontWeight: FontWeight.w400),
-                                    ))),
-                            onPressed: () {
-                              setState(() {
-                                _selectedActiveStatus = "All";
-                              });
-                            },
-                            backgroundColor: Colors.grey[200],
-                            shape: StadiumBorder(
-                                side: BorderSide(
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 6),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text("Selected ProviderType :",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14)),
+                                Container(
+                                  margin: EdgeInsets.only(left: 4),
+                                  child: Chip(
+                                    elevation: 2.0,
+                                    label: Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 12),
+                                        height: 20,
+                                        child: Center(
+                                            child: Text(
+                                          _selectedProviderType == null
+                                              ? "All"
+                                              : _selectedProviderType.name,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600),
+                                        ))),
+                                    backgroundColor: GREEN_HUE,
+                                    shape: StadiumBorder(
+                                        side: BorderSide(
+                                      width: 1,
+                                      color: Colors.greenAccent,
+                                    )),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            margin: EdgeInsets.only(top: 6),
+                            child: SingleChildScrollView(
+                              child: FutureBuilder<List<ProviderType>>(
+                                  future: getProviderTypeAction(
+                                      context: context, helper: _helper),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError)
+                                      print(snapshot.error);
+                                    return snapshot.hasData
+                                        ? Wrap(
+                                            alignment: WrapAlignment.center,
+                                            children:
+                                                getProviderTypes(snapshot.data),
+                                          )
+                                        : Container(
+                                            margin: EdgeInsets.only(
+                                                top: size.height * 0.20,
+                                                bottom: size.height * 0.20),
+                                            child: Center(
+                                                child:
+                                                    CircularProgressIndicator()));
+                                  }),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ActionChip(
+                                elevation: 8.0,
+                                padding: EdgeInsets.all(2.0),
+                                avatar: CircleAvatar(
+                                  backgroundColor: GREEN_HUE,
+                                  child: Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                ),
+                                label: Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 2),
+                                    child: Text('Apply')),
+                                onPressed: () async {
+                                  _helper.providerType = _selectedProviderType;
+                                  _helper.activeStatus =
+                                      _selectedActiveStatus == "All"
+                                          ? Status.all
+                                          : _selectedActiveStatus == "Active"
+                                              ? Status.active
+                                              : Status.pending;
+                                  print("Filter");
+                                  setState(() {
+                                    isFilter = false;
+                                  });
+                                  print(_helper.providerType);
+                                  print(_helper.activeStatus);
+                                },
+                                backgroundColor: Colors.grey[200],
+                                shape: StadiumBorder(
+                                    side: BorderSide(
                                   width: 1,
-                                  color: Colors.greenAccent,
+                                  color: GREEN_HUE,
                                 )),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 8),
-                            child: ActionChip(
-                              elevation: isAllStatus ? 12.0 : 2.0,
-                              padding: EdgeInsets.all(2.0),
-                              label: Container(
-                                  width: 60,
-                                  height: 20,
-                                  child: Center(
-                                      child: Text(
-                                        'Active',
-                                        style: TextStyle(
-                                            color: BLUE_HUE,
-                                            fontWeight: FontWeight.w400),
-                                      ))),
-                              onPressed: () {
-                                setState(() {
-                                  _selectedActiveStatus = "Active";
-                                });
-                              },
-                              backgroundColor: Colors.grey[200],
-                              shape: StadiumBorder(
-                                  side: BorderSide(
-                                    width: 1,
-                                    color: Colors.greenAccent,
-                                  )),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 4),
-                            child: ActionChip(
-                              elevation: 8.0,
-                              padding: EdgeInsets.all(2.0),
-                              label: Container(
-                                  width: 60,
-                                  height: 20,
-                                  child: Center(
-                                      child: Text(
-                                        'Pending',
-                                        style: TextStyle(
-                                            color: BLUE_HUE,
-                                            fontWeight: FontWeight.w400),
-                                      ))),
-                              onPressed: () {
-                                setState(() {
-                                  _selectedActiveStatus = "Pending";
-                                });
-                              },
-                              backgroundColor: Colors.grey[200],
-                              shape: StadiumBorder(
-                                  side: BorderSide(
-                                    width: 1,
-                                    color: Colors.greenAccent,
-                                  )),
-                            ),
+                              ),
+                            ],
                           )
                         ],
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 6),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text("Selected ProviderType :",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14)),
-                          Container(
-                            margin: EdgeInsets.only(left: 4),
-                            child: Chip(
-                              elevation: 2.0,
-                              label: Container(
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 12),
-                                  height: 20,
-                                  child: Center(
-                                      child: Text(_selectedProviderType == null
-                                          ? "All"
-                                          : _selectedProviderType.name,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600),
-                                      ))),
-                              backgroundColor: GREEN_HUE,
-                              shape: StadiumBorder(
-                                  side: BorderSide(
-                                    width: 1,
-                                    color: Colors.greenAccent,
-                                  )),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      margin: EdgeInsets.only(top: 6),
-                      child: SingleChildScrollView(
-                        child: FutureBuilder<List<ProviderType>>(
-                            future: getProviderTypeAction(
-                                context: context, helper: _helper),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError)
-                                print(snapshot.error);
-                              return snapshot.hasData
-                                  ? Wrap(
-                                alignment: WrapAlignment.center,
-                                children: getProviderTypes(
-                                    snapshot.data),
-                              )
-                                  : Container(
-                                  margin: EdgeInsets.only(
-                                      top: size.height * 0.20,
-                                      bottom: size.height * 0.20),
-                                  child: Center(
-                                      child:
-                                      CircularProgressIndicator()));
-                            }),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        ActionChip(
-                          elevation: 8.0,
-                          padding: EdgeInsets.all(2.0),
-                          avatar: CircleAvatar(
-                            backgroundColor: GREEN_HUE,
-                            child: Icon(
-                              Icons.check,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          ),
-                          label: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 2),
-                              child: Text('Apply')),
-                          onPressed: () async {
-                            _helper.providerType = _selectedProviderType;
-                            _helper.activeStatus = _selectedActiveStatus == "All" ? Status.all
-                                : _selectedActiveStatus == "Active"
-                                ? Status.active : Status.pending;
-                            print ("Filter");
-                            setState(() {
-                              isFilter = false;
-                            });
-                            print(_helper.providerType);
-                            print(_helper.activeStatus);
-                          },
-                          backgroundColor: Colors.grey[200],
-                          shape: StadiumBorder(
-                              side: BorderSide(
-                                width: 1,
-                                color: GREEN_HUE,
-                              )),
-                        ),
-                      ],
                     )
-                  ],
-                ),
-              )
                   : Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 38,
-                      margin: EdgeInsets.only(right: 6),
-                      width: size.width * .65,
-                      decoration: BoxDecoration(
-                          color: BLUE_HUE.withOpacity(0.1),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(6))),
-                      child: GestureDetector(
-                        onTap: () {
-                          showSearch(
-                            context: context,
-                            delegate: CustomSearchDelegate(),
-                          );
-                        },
-                        child: Row(
-                          children: [
-                            Container(
-                                margin: EdgeInsets.only(left: 4),
-                                child: Icon(
-                                  Icons.search,
-                                  size: 24,
-                                  color: BLUE_HUE.withOpacity(0.3),
-                                )),
-                            Expanded(
-                                child: Text(
-                                  "Search for name or location",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: BLUE_HUE.withOpacity(0.3)),
-                                  overflow: TextOverflow.ellipsis,
-                                ))
-                          ],
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 38,
+                            margin: EdgeInsets.only(right: 6),
+                            width: size.width * .65,
+                            decoration: BoxDecoration(
+                                color: BLUE_HUE.withOpacity(0.1),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(6))),
+                            child: GestureDetector(
+                              onTap: () {
+                               Navigator.pushNamed(context, SearchOptionsScreen.routeName);
+                              },
+                              child: Row(
+                                children: [
+                                  Container(
+                                      margin: EdgeInsets.only(left: 4),
+                                      child: Icon(
+                                        Icons.search,
+                                        size: 24,
+                                        color: BLUE_HUE.withOpacity(0.3),
+                                      )),
+                                  Expanded(
+                                      child: Text(
+                                    "Search for name or location",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: BLUE_HUE.withOpacity(0.3)),
+                                    overflow: TextOverflow.ellipsis,
+                                  ))
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                            side: BorderSide(width: 2, color: GREEN_HUE),
+                          ),
+                          onPressed: () {
+                            isFilter
+                                ? setState(() {
+                                    isFilter = false;
+                                  })
+                                : setState(() {
+                                    isFilter = true;
+                                  });
+                            print(isFilter);
+                          },
+                          child: Text(
+                            'FILTER',
+                            style:
+                                TextStyle(color: GREEN_HUE, letterSpacing: 2),
+                          ),
+                        )
+                      ],
                     ),
-                  ),
-                  OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0),
-                      ),
-                      side: BorderSide(width: 2, color: GREEN_HUE),
-                    ),
-                    onPressed: () {
-                      isFilter
-                          ? setState(() {
-                        isFilter = false;
-                      })
-                          : setState(() {
-                        isFilter = true;
-                      });
-                      print(isFilter);
-                    },
-                    child: Text(
-                      'FILTER',
-                      style:
-                      TextStyle(color: GREEN_HUE, letterSpacing: 2),
-                    ),
-                  )
-                ],
-              ),
             ),
             Expanded(
               child: isFilter
                   ? Container()
                   : SingleChildScrollView(
-                child: FutureBuilder<List<CustomProviderResponse>>(
-                    future: getProviderListAction(
-                        context: context, helper: _helper),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) print(snapshot.error);
-                      return snapshot.hasData
-                          ? ProviderList(
-                          customProviderList: snapshot.data,
-                          scaffoldKey: _scaffoldKey)
-                          : Container(
-                          margin: EdgeInsets.only(
-                              top: size.height * 0.40),
-                          child: Center(
-                              child: CircularProgressIndicator()));
-                    }),
-              ),
+                      child: FutureBuilder<List<CustomProviderResponse>>(
+                          future: getProviderListAction(
+                              context: context, helper: _helper),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) print(snapshot.error);
+                            return snapshot.hasData
+                                ? ProviderList(
+                                    customProviderList: snapshot.data,
+                                    scaffoldKey: _scaffoldKey)
+                                : Container(
+                                    margin: EdgeInsets.only(
+                                        top: size.height * 0.40),
+                                    child: Center(
+                                        child: CircularProgressIndicator()));
+                          }),
+                    ),
             ),
           ],
         );
@@ -439,16 +441,17 @@ class _HomeScreenState extends State<HomeScreen> {
       _token = token["value"];
     });
     List<CustomProviderResponse> responsePayload =
-    await helper.getCustomProviderResponseList(
-        authToken: _token, errorCallback: errorCallback);
+        await helper.getCustomProviderResponseList(
+            authToken: _token, errorCallback: errorCallback);
 
     if ((_helper.activeStatus == Status.all) &&
         (_helper.providerType == null)) {
       return responsePayload;
-    }else if ((_helper.activeStatus == Status.all) &&
+    } else if ((_helper.activeStatus == Status.all) &&
         (_helper.providerType != null)) {
       return responsePayload
-          .where((provider) => provider.providerType == _helper.providerType).toList();
+          .where((provider) => provider.providerType == _helper.providerType)
+          .toList();
     } else if ((_helper.activeStatus == Status.active) &&
         (_helper.providerType == null)) {
       return responsePayload
@@ -464,13 +467,15 @@ class _HomeScreenState extends State<HomeScreen> {
       return responsePayload
           .where((provider) => provider.activeStatus == "Active")
           .toList()
-          .where((provider) => provider.providerType == _helper.providerType).toList();
+          .where((provider) => provider.providerType == _helper.providerType)
+          .toList();
     } else if ((_helper.activeStatus == Status.pending) &&
         (_helper.providerType != null)) {
       return responsePayload
           .where((provider) => provider.activeStatus == "Pending")
           .toList()
-          .where((provider) => provider.providerType == _helper.providerType).toList();
+          .where((provider) => provider.providerType == _helper.providerType)
+          .toList();
     }
     return responsePayload;
   }
@@ -508,12 +513,10 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 20,
               child: Center(
                   child: Text(
-                    "${data[i].name}",
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: BLUE_HUE,
-                        fontWeight: FontWeight.w400),
-                  ))),
+                "${data[i].name}",
+                style: TextStyle(
+                    fontSize: 12, color: BLUE_HUE, fontWeight: FontWeight.w400),
+              ))),
           onPressed: () {
             setState(() {
               _selectedProviderType = data[i];
@@ -522,9 +525,9 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Colors.grey[200],
           shape: StadiumBorder(
               side: BorderSide(
-                width: 1,
-                color: Colors.greenAccent,
-              )),
+            width: 1,
+            color: Colors.greenAccent,
+          )),
         ),
       ));
     }
@@ -539,12 +542,10 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 20,
             child: Center(
                 child: Text(
-                  "All",
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: BLUE_HUE,
-                      fontWeight: FontWeight.w400),
-                ))),
+              "All",
+              style: TextStyle(
+                  fontSize: 12, color: BLUE_HUE, fontWeight: FontWeight.w400),
+            ))),
         onPressed: () {
           setState(() {
             _selectedProviderType = null;
@@ -553,9 +554,9 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.grey[200],
         shape: StadiumBorder(
             side: BorderSide(
-              width: 1,
-              color: Colors.greenAccent,
-            )),
+          width: 1,
+          color: Colors.greenAccent,
+        )),
       ),
     ));
     return widgets;
