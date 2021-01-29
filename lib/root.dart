@@ -79,8 +79,7 @@ class _AppSetterState extends State<AppSetter>
 
   void saveToken() async {
     final application = Application.instance();
-    Token token = Token("token",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjEwNzI4MjAzLCJleHAiOjE2MTMzMjAyMDN9.7TKlfBKkf8jw9FPjo91z7gQxvLB21ycXphEkH6-_Cc0");
+    Token token = Token("token", "");
     await application.setAuthToken("authToken", token.toJson());
   }
 }
